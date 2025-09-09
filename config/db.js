@@ -1,6 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import mongoose from "mongoose";
 
-const MONGO_URI = "mongodb://127.0.0.1:27017/express_auth"; 
+const MONGO_URI = process.env.MONGO_URI
 
 const connectDB = async () => {
   try {

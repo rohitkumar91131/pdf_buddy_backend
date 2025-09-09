@@ -1,13 +1,10 @@
 import express from "express";
-import { verifyToken } from "../middlewares/authMiddleware.js";
+import { uploadPdf } from "../controllers/PdfController.js";
+import { upload } from "../config/multerStorage.js";
+
 
 const router = express.Router();
 
-router.get("/", verifyToken, (req, res) => {
-  res.json({
-    success: true,
-    message: `Welcome, user with ID: ${req.user.id}`,
-  });
-});
+router.post("/upload", upload.single("file"), uploadPdf);
 
 export default router;
