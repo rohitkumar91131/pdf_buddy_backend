@@ -45,7 +45,7 @@ export const signup = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign(
-      { id: newUser._id }, 
+      { userId: newUser._id }, 
       SECRET, 
       { expiresIn: "1h" }
     );
@@ -97,7 +97,7 @@ export const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id },
+      { userId: user._id },
       SECRET, 
       { expiresIn: "1h" }
     );
@@ -114,3 +114,11 @@ export const login = async (req, res) => {
     });
   }
 };
+
+
+export const verified = (req, res)=>{
+  res.json({
+    success : true,
+    msg : "Welcome back"
+  })
+}

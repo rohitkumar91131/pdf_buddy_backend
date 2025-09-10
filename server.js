@@ -25,6 +25,7 @@ app.use("/pdfs", pdfRoutes);
 
 
 if(!fs.existsSync("uploads")){
+  console.log("Creating uploads folder")
   fs.mkdirSync("uploads")
 }
 app.listen(PORT, () => {
