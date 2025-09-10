@@ -1,4 +1,5 @@
 import Pdf from "../models/PdfModel.js";
+import fs from 'fs';
 
 export const uploadPdf = async (req, res) => {
   try {
@@ -24,7 +25,7 @@ export const uploadPdf = async (req, res) => {
       encoding: file.encoding,
       type: file.mimetype,
       destination: file.destination,
-      path: file.path,
+      pdfUrlPath: file.path,
       filename: file.filename,
       fieldname: file.fieldname,
       userId: req.user.userId,
@@ -37,7 +38,7 @@ export const uploadPdf = async (req, res) => {
         id: newPdf._id,
         name: newPdf.name,
         filename: newPdf.filename,
-        path: newPdf.path,
+        pdfUrlPath: newPdf.path,
         size: newPdf.size,
         type: newPdf.type,
       },
@@ -108,6 +109,45 @@ export const editPdfName = async(req,res) =>{
       success : true,
       msg : "name changed successfully"
     })
+  }
+  catch(err){
+    res.json({
+      success : false,
+      msg : err.message
+    })
+  }
+}
+
+export const sendPdfFileUrl = async(req,res) =>{
+  try{
+    let {id} = req.params;
+    if(!id){
+      return res.json({
+        success : false,
+        msg : "Id missing"
+      })
+    }
+
+    const pdf = await Pdf.findById(id);
+
+    if(!pdf){
+      return res.json({
+        success : false,
+        msg : "Pdf not found",
+        pdfUrlPath : ""
+      })
+    }
+    const filePath = pdf.pdfUrlPath;
+    fs.readFile(filePath , (err , data)=>{
+      if(err){
+        console.log(err);
+        return res.status(500).send('Error reading file.');
+      }
+      res.setHeader('Content-Type', 'application/pdf');
+      res.send(data);
+    })
+
+
   }
   catch(err){
     res.json({

@@ -21,7 +21,7 @@ const pdfSchema = new mongoose.Schema(
         type: String 
         
     },      
-    path: { 
+    pdfUrlPath: { 
         type: String, 
         required: true 
     }, 
