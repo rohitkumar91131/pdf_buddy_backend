@@ -9,7 +9,7 @@ import authRoutes from "./routes/AuthRoutes.js";
 import pdfRoutes from './routes/PdfRoutes.js';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
-
+import highlightRoutes from './routes/highlightRoutes.js'
 const app = express();
 const PORT = process.env.PORT;
 
@@ -22,6 +22,7 @@ app.use(cookieParser());
 
 app.use("/auth", authRoutes);
 app.use("/pdfs", pdfRoutes);
+app.use("/highlights", highlightRoutes);
 
 
 if(!fs.existsSync("uploads")){

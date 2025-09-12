@@ -11,13 +11,23 @@ export const uploadPdf = async (req, res) => {
       });
     }
 
-    console.log(req.user)
     if (!req.user || !req.user.userId) {
       return res.status(401).json({
         success: false,
         msg: "Unauthorized: User not found",
       });
     }
+
+
+    const isPdfExits = await Pdf.findOne({name :file.originalname });
+    if(isPdfExits){
+      return res.json({
+        success : false,
+        msg : "Name already present in your dashboard Please try changing name"
+      })
+    }
+
+
 
     const newPdf = await Pdf.create({
       name: file.originalname,
@@ -30,6 +40,8 @@ export const uploadPdf = async (req, res) => {
       fieldname: file.fieldname,
       userId: req.user.userId,
     });
+
+    console.log(newPdf)
 
     return res.json({
       success: true,
@@ -201,3 +213,15 @@ export const deletePdf = async(req,res)=>{
     })
   }
 }
+
+
+export const sendId = async (req, res) => {
+  const { name } = req.params;
+  try {
+    const pdf = await Pdf.findOne({ name });
+    if (!pdf) return res.status(404).json({ message: "PDF not found" });
+    res.json({ _id: pdf._id });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
