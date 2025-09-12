@@ -120,15 +120,15 @@ export const editPdfName = async(req,res) =>{
 
 export const sendPdfFileUrl = async(req,res) =>{
   try{
-    let {id} = req.params;
-    if(!id){
+    let {name} = req.params;
+    if(!name){
       return res.json({
         success : false,
         msg : "Id missing"
       })
     }
 
-    const pdf = await Pdf.findById(id);
+    const pdf = await Pdf.findOne({name });
 
     if(!pdf){
       return res.json({
@@ -153,6 +153,51 @@ export const sendPdfFileUrl = async(req,res) =>{
     res.json({
       success : false,
       msg : err.message
+    })
+  }
+}
+
+
+export const deletePdf = async(req,res)=>{
+  const {id} = req.params;
+  if(!id) {
+    return res.json({
+      success : false,
+      msg : "Missing Id"
+    })
+  }
+  try{
+    const pdf= await Pdf.findByIdAndDelete(id);
+    if(!pdf){
+      return res.json({
+        success : false,
+        msg : "Pdf not found"
+      })
+    }
+
+    const filePath = pdf.pdfUrlPath;
+
+    if(fs.existsSync(filePath)){
+      await fs.promises.unlink(filePath);
+      return res.json({
+        success: true,
+        msg: "Pdf and file deleted successfully",
+      });
+    }
+
+    else{
+      return res.json({
+        success: true,
+        msg: "Pdf deleted, but file not found on disk",
+      });
+    }
+
+
+  }
+  catch(err){
+    return res.json({
+      success : false,
+      msg : err.message || "server error"
     })
   }
 }
