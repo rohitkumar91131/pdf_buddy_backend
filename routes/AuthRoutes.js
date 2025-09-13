@@ -1,5 +1,5 @@
 import express from "express";
-import { login, signup, verified } from "../controllers/AuthController.js";
+import { login, logout, signup, verified } from "../controllers/AuthController.js";
 import { verifyToken } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -7,4 +7,5 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.get("/verify" ,verifyToken ,verified) ;
+router.post("/logout",verifyToken , logout);
 export default router;

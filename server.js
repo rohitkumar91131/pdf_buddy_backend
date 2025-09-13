@@ -12,7 +12,6 @@ import cookieParser from "cookie-parser";
 import highlightRoutes from './routes/highlightRoutes.js'
 const app = express();
 const PORT = process.env.PORT;
-
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
@@ -31,5 +30,6 @@ if(!fs.existsSync("uploads")){
 }
 app.listen(PORT, () => {
     console.log("Frontend URL:", process.env.FRONTEND_URL);
+
     console.log(`🚀 Server running on port ${PORT}`);
 });
