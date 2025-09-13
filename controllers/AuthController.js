@@ -1,9 +1,10 @@
 import dotenv from 'dotenv'
+dotenv.config();
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/UserModel.js";
 
-dotenv.config();
+
 
 const SECRET = process.env.JWT_SECRET; 
 const COOKIE_OPTIONS = {
